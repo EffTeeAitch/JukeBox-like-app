@@ -7,157 +7,157 @@ namespace SzafaGrajaca
     {
         static void Main(string[] args)
         {
-            bool czyKoniec = true;
-            Plyta p1 = new Plyta("Kai Straw", "GUN", "Nie wiem", new List<string> { "They Send You", "Cherry Corvette", "Rolls", "The Recipe", "#1 Customer", "Jesse James" });
-            Plyta p2 = new Plyta("Ja", "Autko", "Rozne", new List<string> { "Bangier", "August", "Harnas Ice Tea", "Mexico", "Wendy", "Oreo" });
+            bool hasEnded = true;
+            Album album1 = new Album("Kai Straw", "GUN", "Soul", new List<string> { "They Send You", "Cherry Corvette", "Rolls", "The Recipe", "#1 Customer", "Jesse James" });
+            Album album2 = new Album("Ja", "Autko", "Rozne", new List<string> { "Bangier", "August", "Harnas Ice Tea", "Mexico", "Wendy", "Oreo" });
 
-            SzafaGra szafka = new SzafaGra();
-            szafka.dodajPlyte(p1);
-            szafka.dodajPlyte(p2);
+            JukeBox jukeBox = new JukeBox();
+            jukeBox.addAlbum(album1);
+            jukeBox.addAlbum(album2);
 
             #region Menu
             do
             {
                 Console.WriteLine("\n\nMenu:");
-                Console.WriteLine("1) Pokaz plyty");
-                Console.WriteLine("2) Dodaj plyte");
-                Console.WriteLine("3) Wybierz plyte");
-                Console.WriteLine("4) Nastepny utwor");
-                Console.WriteLine("5) Zakoncz sluchanie plyty");
+                Console.WriteLine("1) Show avaliable albums");
+                Console.WriteLine("2) Insert your own album");
+                Console.WriteLine("3) Pick album");
+                Console.WriteLine("4) Next song");
+                Console.WriteLine("5) Stop listening to album");
                 Console.WriteLine("6) Exit");
-                Console.Write("\r\nWybierz madrze: ");
+                Console.Write("\r\nPick wisely: ");
 
                 switch (Console.ReadLine())
                 {
                     case "1":
-                        szafka.pokazTytulyAlbomow();
+                        jukeBox.showAlbumTitle();
                         break;
                     case "2":
-                        szafka.dodajPlyte();
+                        jukeBox.addAlbum();
                         break;
                     case "3":
-                        szafka.wybierzPlyte();
+                        jukeBox.pickAlbum();
                         break;
                     case "4":
-                        szafka.nastepnaPiosenka();
+                        jukeBox.nextSong();
                         break;
                     case "5":
-                        szafka.zakonczOdtwarzanie();
+                        jukeBox.stopPlaying();
                         break;
                     case "6":
-                        Console.WriteLine("Do widzenia");
-                        czyKoniec = false;
+                        Console.WriteLine("See you soon");
+                        hasEnded = false;
                         break;
                     default:
                         break;
                 }
-            } while (czyKoniec);
+            } while (hasEnded);
 
             #endregion
         }
 
     }
 
-    class Plyta
+    class Album
     {
-        public string nazwa_albumu, wykonawca, rodzaj_muzyki;
-        public List<string> nazwy_utworow = new List<string>();
-        public int ilosc_utworow;
+        public string albumName, author, genre;
+        public List<string> songNameList = new List<string>();
+        public int songCount;
 
-        public Plyta(string _nazwa_albumu, string _wykonawca, string _rodzaj_muzyki, List<string> _lista)
+        public Album(string _albumName, string _author, string _genre, List<string> _list)
         {
-            nazwa_albumu = _nazwa_albumu;
-            wykonawca = _wykonawca;
-            rodzaj_muzyki = _rodzaj_muzyki;
-            foreach (string l in _lista)
+            albumName = _albumName;
+            author = _author;
+            genre = _genre;
+            foreach (string l in _list)
             {
-                nazwy_utworow.Add(l);
+                songNameList.Add(l);
             }
-            ilosc_utworow = _lista.Count;
+            songCount = _list.Count;
 
         }
     }
 
 
-    class SzafaGra
+    class JukeBox
     {
-        public List<Plyta> plytoteka = new List<Plyta>();
-        public int aktualnaPiosenka;
-        public int aktualnaPlyta;
+        public List<Album> allAlbums = new List<Album>();
+        public int currSong;
+        public int currAlbum;
 
 
-        public SzafaGra()
+        public JukeBox()
         {
-            aktualnaPiosenka = -1;
-            aktualnaPlyta = -1;
+            currSong = -1;
+            currAlbum = -1;
         }
 
-        public void pokazTytulyAlbomow()
+        public void showAlbumTitle()
         {
             Console.Clear();
-            for (int i = 0; i < plytoteka.Count; i++)
+            for (int i = 0; i < allAlbums.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {plytoteka[i].nazwa_albumu}");
+                Console.WriteLine($"{i + 1}. {allAlbums[i].albumName}");
             }
         }
 
-        public void wybierzPlyte()
+        public void pickAlbum()
         {
             Console.Clear();
-            aktualnaPiosenka = 0;
-            aktualnaPlyta = 0;
-            pokazTytulyAlbomow();
-            Console.Write("Którą płytę załadować?: ");
-            aktualnaPlyta = (Convert.ToInt32(Console.ReadLine()) - 1);
-            switch (plytoteka.Count > aktualnaPlyta)
+            currSong = 0;
+            currAlbum = 0;
+            showAlbumTitle();
+            Console.Write("Wich album would you like to play: ");
+            currAlbum = (Convert.ToInt32(Console.ReadLine()) - 1);
+            switch (allAlbums.Count > currAlbum)
             {
                 case true:
-                    Console.WriteLine($"\nTytul albumu: {plytoteka[aktualnaPlyta].nazwa_albumu}");
-                    Console.WriteLine($"Tytul piosenki: {plytoteka[aktualnaPlyta].nazwy_utworow[aktualnaPiosenka]}");
+                    Console.WriteLine($"\nAlbum's name: {allAlbums[currAlbum].albumName}");
+                    Console.WriteLine($"Name of the song: {allAlbums[currAlbum].songNameList[currSong]}");
                     break;
                 case false:
-                    Console.WriteLine("Podana wartosc jest za duza");
-                    wybierzPlyte();
+                    Console.WriteLine("Inserted value is too high");
+                    pickAlbum();
                     break;
             }
 
 
         }
 
-        public void dodajPlyte(Plyta _plyta)
+        public void addAlbum(Album _Album)
         {
-            plytoteka.Add(_plyta);
+            allAlbums.Add(_Album);
         }
 
-        public void dodajPlyte()
+        public void addAlbum()
         {
             Console.Clear();
-            string autor = "";
-            string gatunek = "";
-            string nazwa = "";
+            string authorF = "";
+            string genreF = "";
+            string nameF = "";
             string cn = "";
-            List<string> plyta = new List<string>();
-            int licznik = 1;
+            List<string> Album = new List<string>();
+            int helper = 1;
 
-            Console.Write("Podaj autora: ");
-            autor = Console.ReadLine();
+            Console.Write("Who the author is: ");
+            authorF = Console.ReadLine();
             Console.WriteLine();
-            Console.Write("Podaj nazwe albumu: ");
-            nazwa = Console.ReadLine();
+            Console.Write("Write album's name: ");
+            nameF = Console.ReadLine();
             Console.WriteLine();
-            Console.Write("Podaj gatunek: ");
-            gatunek = Console.ReadLine();
+            Console.Write("Write genre: ");
+            genreF = Console.ReadLine();
             Console.WriteLine();
 
-            Console.WriteLine("Podaj nazwy kolejnych utworow na tej plycie, albo pusty znak by zakończyć: ");
+            Console.WriteLine("Write names of the following song in that album, if you ended -> insert blank text: ");
             do
             {
-                Console.WriteLine($"Utwor nr. {licznik}: ");
+                Console.WriteLine($"Track nr. {helper}: ");
                 cn = Console.ReadLine();
                 if(cn != "")
                 {
-                    plyta.Add(cn);
-                    licznik++;
+                    Album.Add(cn);
+                    helperer++;
                 }
                 else
                 {
@@ -165,41 +165,41 @@ namespace SzafaGrajaca
                 }
 
             } while (cn != "");
-            Plyta plytas = new Plyta(nazwa, autor, gatunek, plyta);
-            plytoteka.Add(plytas);
+            Album Albums = new Album(nameF, authorF, genreF, Album);
+            allAlbums.Add(Albums);
 
         }
 
-        public void nastepnaPiosenka()
+        public void nextSong()
         {
             Console.Clear();
-            if (aktualnaPiosenka == -1)
+            if (currSong == -1)
             {
-                Console.WriteLine("Nie ma wybranej plyty do odtworzenia");
+                Console.WriteLine("There is no selected album to play");
             }
             else
             {
-                if (aktualnaPiosenka + 1 == plytoteka[aktualnaPlyta].nazwy_utworow.Count)
+                if (currSong + 1 == allAlbums[currAlbum].songNameList.Count)
                 {
-                    aktualnaPiosenka = -1;
-                    Console.WriteLine("Nie ma juz piosenek na tej plycie. Wybierz kolejna");
+                    currSong = -1;
+                    Console.WriteLine("This album has ended pick another one");
                 }
                 else
                 {
-                    aktualnaPiosenka += 1;
-                    Console.WriteLine($"Odtwarzam: {plytoteka[aktualnaPlyta].nazwy_utworow[aktualnaPiosenka]}");
+                    currSong += 1;
+                    Console.WriteLine($"Playing: {allAlbums[currAlbum].songNameList[currSong]}");
                 }
 
             }
 
         }
 
-        public void zakonczOdtwarzanie()
+        public void stopPlaying()
         {
             Console.Clear();
-            aktualnaPiosenka = -1;
-            aktualnaPlyta = -1;
-            Console.WriteLine("Sluchanie zakonczone odtworz kolejna plyte");
+            currSong = -1;
+            currAlbum = -1;
+            Console.WriteLine("Playing has ended, pick another album to play music from");
         }
 
 
