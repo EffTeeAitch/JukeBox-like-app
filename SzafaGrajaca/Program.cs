@@ -8,11 +8,11 @@ namespace SzafaGrajaca
         static void Main(string[] args)
         {
             bool hasEnded = true;
-            Album album1 = new Album("Kai Straw", "GUN", "Soul", new List<string> { "They Send You", "Cherry Corvette", "Rolls", "The Recipe", "#1 Customer", "Jesse James" });
-            Album album2 = new Album("Ja", "Autko", "Rozne", new List<string> { "Bangier", "August", "Harnas Ice Tea", "Mexico", "Wendy", "Oreo" });
+            Album album1 = new Album("Kai Straw", "GUN", "Soul", new List<string> { "They Send You", "Cherry Corvette", "Rolls", "The Recipe", "#1 Customer", "Jesse James" });  /*adding albums ready-to-play*/
+            Album album2 = new Album("Ja", "Autko", "Rozne", new List<string> { "Bangier", "August", "Harnas Ice Tea", "Mexico", "Wendy", "Oreo" });  /*adding albums ready-to-play*/
 
             JukeBox jukeBox = new JukeBox();
-            jukeBox.addAlbum(album1);
+            jukeBox.addAlbum(album1);     //inserting album to the jukeBox
             jukeBox.addAlbum(album2);
 
             #region Menu
@@ -82,17 +82,17 @@ namespace SzafaGrajaca
     class JukeBox
     {
         public List<Album> allAlbums = new List<Album>();
-        public int currSong;
-        public int currAlbum;
+        public int currSong;        //variable containing number/id of current song
+        public int currAlbum;       //variable containing number/id of current album
 
 
         public JukeBox()
         {
-            currSong = -1;
+            currSong = -1;      //resetting variables x2
             currAlbum = -1;
         }
 
-        public void showAlbumTitle()
+        public void showAlbumTitle()        //showing titles of avaliable albums
         {
             Console.Clear();
             for (int i = 0; i < allAlbums.Count; i++)
@@ -101,7 +101,7 @@ namespace SzafaGrajaca
             }
         }
 
-        public void pickAlbum()
+        public void pickAlbum()     //choosing one album to play right now
         {
             Console.Clear();
             currSong = 0;
@@ -109,7 +109,7 @@ namespace SzafaGrajaca
             showAlbumTitle();
             Console.Write("Wich album would you like to play: ");
             currAlbum = (Convert.ToInt32(Console.ReadLine()) - 1);
-            switch (allAlbums.Count > currAlbum)
+            switch (allAlbums.Count > currAlbum)        //if there is album to play
             {
                 case true:
                     Console.WriteLine($"\nAlbum's name: {allAlbums[currAlbum].albumName}");
